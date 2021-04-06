@@ -1,0 +1,50 @@
+rofi-theme-selector
+bindsym $mod+d exec --no-startup-id rofi -theme lb by Qball -font "hack 10" -show run
+sudo pacman -S xorg-xrandr
+Разрешение монитора, второй монитор
+
+В i3 конечно же можно работать с несколькими мониторами. Нам понадобится программа xrandr
+
+sudo pacman -S xorg-xrandr
+
+Запустив ее мы увидим список мониторов, и список поддерживаемых ими разрешений экрана. Мой macbook с экраном retina поддерживает 2560x1600. Это довольно большое разрешение для 13 дюймового экрана, поэтому у меня сейчас все очень мелко. Масштабирование в линуксах работает не очень, за исключением некоторых тяжеловесных DE как GNOME 3, там из коробки все намного лучше. Поэтому я буду довольствоваться 1920x1200, чего мне с головой хватит. На второй монитор мне потребуется установить разрешение 1920x1080.
+
+Пропишу в конфиге i3
+
+exec xrandr --output eDP-1 --mode 1920x1200 --pos 0x0
+exec xrandr --output HDMI-2 --mode 1920x1080 --pos 1920x0
+
+где eDP-1 - имя нативного монитора ноутбука, HDMI-2 - имя внешнего монитора, --mode 1920x1200 - устанавливаемое разрешение для монитора, --pos 0x0 - координата верхней левой точки монитора в разрезе двух рядом стоящих мониторов.
+
+И специфично под macbook, мне необходимо подправить конфиг xorg для более четкого изображения https://wiki.archlinux.org/index.php/HiDPI#X_Resources
+
+Xft.dpi: 96
+
+! These might also be useful depending on your monitor and personal preference:
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+
+Вам не нужно, если у вас не HiDPI.
+
+
+Bluetooth
+
+Для того, чтобы работал bluetooth, необходимо установить ряд утилит
+
+sudo pacman -S bluez bluez-utils pulseaudio-bluetooth blueman
+
+из которых blueman - графическая утилита
+
+
+sudo pacman -S picom
+exec --no-startup-id sleep 1; compton -b
+
+opacity-rule = ["85:class_g = 'Termite'"];
+
+
+https://igancev.ru/2020-01-05-installing-and-configuring-i3wm-on-arch-linux
+
